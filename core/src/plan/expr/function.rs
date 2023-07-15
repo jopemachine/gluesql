@@ -20,6 +20,7 @@ impl Function {
                 Exprs::Empty(empty())
             }
             Self::Lower(expr)
+            | Self::Length(expr)
             | Self::Initcap(expr)
             | Self::Upper(expr)
             | Self::Sin(expr)
@@ -169,7 +170,7 @@ impl Function {
             Self::Concat(exprs) => Exprs::VariableArgs(exprs.iter()),
             Self::ConcatWs { separator, exprs } => {
                 Exprs::VariableArgsWithSingle(once(separator).chain(exprs.iter()))
-            }
+            },
         }
     }
 }

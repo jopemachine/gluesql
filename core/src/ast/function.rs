@@ -169,6 +169,7 @@ pub enum Function {
         geometry1: Expr,
         geometry2: Expr,
     },
+    Length(Expr),
 }
 
 impl ToSql for Function {
@@ -373,7 +374,8 @@ impl ToSql for Function {
                     geometry1.to_sql(),
                     geometry2.to_sql()
                 )
-            }
+            },
+            Function::Length(e) => format!("LENGTH({})", e.to_sql()),
         }
     }
 }
@@ -1089,6 +1091,13 @@ mod tests {
             }))
             .to_sql()
         );
+
+        // assert_eq!(
+        //     "LENGTH()",
+        //     &Expr::Function(Box::new(Function::Length((
+
+        //     )).to_sql()
+        // );
     }
 
     #[test]

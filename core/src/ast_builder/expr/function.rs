@@ -149,6 +149,7 @@ pub enum FunctionNode<'a> {
         geometry1: ExprNode<'a>,
         geometry2: ExprNode<'a>,
     },
+    Length(ExprNode<'a>),
 }
 
 impl<'a> TryFrom<FunctionNode<'a>> for Function {
@@ -342,7 +343,8 @@ impl<'a> TryFrom<FunctionNode<'a>> for Function {
                     geometry1,
                     geometry2,
                 })
-            }
+            },
+            FunctionNode::Length(expr) => expr.try_into().map(Function::Length)
         }
     }
 }
@@ -830,6 +832,10 @@ pub fn calc_distance<'a, T: Into<ExprNode<'a>>, U: Into<ExprNode<'a>>>(
     }))
 }
 
+pub fn length<'a, T: Into<ExprNode<'a>>>(expr: T) -> ExprNode<'a> {
+    ExprNode::Function(Box::new(FunctionNode::Length(expr.into())))
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{
@@ -840,7 +846,7 @@ mod tests {
             generate_uuid, get_x, get_y, ifnull, initcap, lcm, left, ln, log, log10, log2, lower,
             lpad, ltrim, md5, modulo, now, num, pi, point, position, power, radians, rand, repeat,
             reverse, right, round, rpad, rtrim, sign, sin, sqrt, substr, tan, test_expr, text,
-            time, timestamp, to_date, to_time, to_timestamp, upper,
+            time, timestamp, to_date, to_time, to_timestamp, upper, length,
         },
         prelude::DataType,
     };

@@ -608,6 +608,7 @@ async fn evaluate_function<'a, 'b: 'a, 'c: 'a, T: GStore>(
             let expr = eval(expr).await?;
             let value = eval(value).await?;
             f::prepend(expr, value)
-        }
+        },
+        Function::Length(expr) => f::length(eval(expr).await?),
     }
 }
