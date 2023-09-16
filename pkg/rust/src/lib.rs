@@ -24,6 +24,8 @@ pub use json_storage;
 #[cfg(feature = "composite-storage")]
 pub use composite_storage;
 
+pub use lmdb_storage;
+
 #[cfg(all(feature = "web-storage", target_arch = "wasm32"))]
 pub use web_storage;
 
@@ -50,6 +52,8 @@ pub mod prelude {
 
     #[cfg(feature = "composite-storage")]
     pub use composite_storage::CompositeStorage;
+
+    pub use lmdb_storage::HeedStorage;
 
     #[cfg(all(feature = "web-storage", target_arch = "wasm32"))]
     pub use web_storage::WebStorage;

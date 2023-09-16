@@ -19,6 +19,7 @@ use {
     json_storage::JsonStorage,
     memory_storage::MemoryStorage,
     sled_storage::SledStorage,
+    lmdb_storage::HeedStorage,
     std::{
         fmt::Debug,
         fs::File,
@@ -52,6 +53,7 @@ enum Storage {
     Memory,
     Sled,
     Json,
+    LMDB,
 }
 
 pub fn run() -> Result<()> {
@@ -80,6 +82,14 @@ pub fn run() -> Result<()> {
 
             run(
                 JsonStorage::new(path).expect("failed to load json-storage"),
+                args.execute,
+            );
+        }
+        (Some(path), Some(Storage::LMDB), _) => {
+            println!("[lmdb-storage] connected to {}", path);
+
+            run(
+                HeedStorage::new(path, "test".to_owned()).expect("failed to load lmdb-storage"),
                 args.execute,
             );
         }
